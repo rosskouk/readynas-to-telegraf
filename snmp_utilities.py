@@ -84,10 +84,26 @@ class SnmpQuery:
         object_types = []
         for oid in list_of_oids:
             if type(oid) is str:
+                #
+                # This is a regular OID
+                #
                 object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(oid)))
             if type(oid) is dict:
+                #
+                # This is a MIB and textual name pair
+                #
                 for key, value in oid.items():
-                    object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(key, value)))
+                    if '.' in value:
+                        #
+                        # The textual name has a key attached, split it to create ObjectIdentity properly
+                        #
+                        split_value = value.split('.')
+                        if len(split_value) != 2:
+                            raise ValueError('Error in construct_object_types(): Invalid SNMP value')
+
+                        object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(key, split_value[0], split_value[1])))
+                    else:
+                        object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(key, value)))
 
         return object_types
 
