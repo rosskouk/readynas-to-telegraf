@@ -66,6 +66,7 @@ class SnmpQuery:
 
         @param list_of_oids LIST - list of OIDs, or textual names to query
         @return LIST - List of PySNMP ObjectType objects
+        @exception ValueError Triggered if an invalid textual SNMP value is provided
         @details
 
         Takes a list of OIDs or textual representations and creates PySNMP
