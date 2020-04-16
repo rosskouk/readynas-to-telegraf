@@ -80,7 +80,8 @@ class InfluxDbOps:
         @return OBJECT Returns an instance of an InfluxDB client object
         """
 
-        client = InfluxDBClient(self.host, self.port, self.user, self.password, self.dbname)
+        client = InfluxDBClient(self.host, self.port,
+                                self.user, self.password, self.dbname)
 
         return client
 
@@ -117,11 +118,8 @@ class InfluxDbOps:
 
         try:
             client = self.influxdb_connect()
-
-            for point in points:
-                print(point)
-
-            status = client.write_points(points, time_precision='s', protocol='json')
+            status = client.write_points(
+                points, time_precision='s', protocol='json')
 
             if status is True:
                 return True
