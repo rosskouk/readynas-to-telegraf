@@ -1,0 +1,42 @@
+v0.0.9
+======
+
+  - b7d6b8b 
+    - Applied PEP8 style guidelines
+  - a6cd395 
+    - Updated README.md
+  - 4037b28 
+    - Updated class documentation
+  - d56f950 
+    - Added process_readynas_fan_table() 
+    - Added process_readynas_temperature_table() 
+    - Added process_readynas_volume_table() 
+    - Added process_readynas_interface_table()
+  - a7d4d16 
+    - Added class InfluxDbOps to allow interactions with InfluxDB issues
+  - 1cb5a36 
+    - Updated .gitignore
+  - 2699493 
+    - Updated class documentation 
+    - Applied Python PEP8 guidelines 
+    - Added get_brief_name() which returns the textual name of an OID 
+    - get_snmp_name() which returns a devices SNMP name
+  - f47637f 
+    - Created first version of main program 
+    - Added function process_readynas_disk_table() to get disk statistics
+  - 56a9dcf 
+    - Added sample config file
+  - a7f1e40 
+    - Updated exception documentation for SnmpQuery::construct_object_types()
+  - a6e822e 
+    - Updated SnmpQuery::construct_object_types() to allow textual names with an index to be handled correctly
+  - 0425622 
+    - Updated README.md
+  - 8b1c931 
+    - Added .gitignore
+  - c52f419 
+    - Added SnmpQuery class with support for SNMP v1 and v2c get and getNext operations
+  - a1c7ce9 
+    - Updated LICENSE
+  - b9ff4ff 
+    - Initial commit
