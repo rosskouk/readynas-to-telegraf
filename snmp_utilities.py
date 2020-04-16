@@ -11,7 +11,7 @@
 #
 # Required libraries:
 #   - re
-#   - pysnmp 
+#   - pysnmp
 #       - https://github.com/etingof/pysnmp
 #
 
