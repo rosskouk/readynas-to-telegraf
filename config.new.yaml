@@ -12,11 +12,3 @@
 readynas:
     host: nas.example.com
     community: snmp_community_string
-
-# InfluxDB optins
-influxdb:
-    host: influxdb.example.com
-    port: 8086
-    user: username
-    password: password
-    dbname: database_name
