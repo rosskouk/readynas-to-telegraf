@@ -110,10 +110,10 @@ class SnmpQuery:
                                 'Error in construct_object_types(): Invalid SNMP value')
 
                         object_types.append(hlapi.ObjectType(
-                            hlapi.ObjectIdentity(key, split_value[0], split_value[1])))
+                            hlapi.ObjectIdentity(key, split_value[0], split_value[1]).addMibSource('./mibs')))
                     else:
                         object_types.append(hlapi.ObjectType(
-                            hlapi.ObjectIdentity(key, value)))
+                            hlapi.ObjectIdentity(key, value).addMibSource('./mibs')))
 
         return object_types
 
@@ -222,6 +222,7 @@ class SnmpQuery:
           - hlapi.UsmUserData('testuser', authKey='authenticationkey', privKey='encryptionkey',
                               authProtocol=hlapi.usmHMACSHAAuthProtocol, privProtocol=hlapi.usmAesCfb128Protocol)
         """
+
         handler = hlapi.nextCmd(
             engine,
             credentials,
