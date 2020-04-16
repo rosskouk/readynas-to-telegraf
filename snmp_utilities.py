@@ -10,8 +10,13 @@
 # on code from https://www.ictshore.com/sdn/python-snmp-tutorial
 #
 # Required libraries:
-#   - pysnmp - https://github.com/etingof/pysnmp
+#   - re
+#   - pysnmp 
+#       - https://github.com/etingof/pysnmp
 #
+
+import re
+
 from pysnmp import hlapi
 
 
@@ -88,7 +93,8 @@ class SnmpQuery:
                 #
                 # This is a regular OID
                 #
-                object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(oid)))
+                object_types.append(hlapi.ObjectType(
+                    hlapi.ObjectIdentity(oid)))
             if type(oid) is dict:
                 #
                 # This is a MIB and textual name pair
@@ -100,11 +106,14 @@ class SnmpQuery:
                         #
                         split_value = value.split('.')
                         if len(split_value) != 2:
-                            raise ValueError('Error in construct_object_types(): Invalid SNMP value')
+                            raise ValueError(
+                                'Error in construct_object_types(): Invalid SNMP value')
 
-                        object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(key, split_value[0], split_value[1])))
+                        object_types.append(hlapi.ObjectType(
+                            hlapi.ObjectIdentity(key, split_value[0], split_value[1])))
                     else:
-                        object_types.append(hlapi.ObjectType(hlapi.ObjectIdentity(key, value)))
+                        object_types.append(hlapi.ObjectType(
+                            hlapi.ObjectIdentity(key, value)))
 
         return object_types
 
@@ -125,10 +134,12 @@ class SnmpQuery:
                 if not error_indication and not error_status:
                     items = {}
                     for var_bind in var_binds:
-                        items[str(var_bind[0].prettyPrint())] = self.cast(var_bind[1])
+                        items[str(var_bind[0].prettyPrint())
+                              ] = self.cast(var_bind[1])
                     result.append(items)
                 else:
-                    raise RuntimeError('Got SNMP error: {0}'.format(error_indication))
+                    raise RuntimeError(
+                        'Got SNMP error: {0}'.format(error_indication))
             except StopIteration:
                 break
 
@@ -161,11 +172,35 @@ class SnmpQuery:
             credentials,
             hlapi.UdpTransportTarget((target, port)),
             context,
-            *self.construct_object_types(oids),  # Asterisk automatically expands list of objects
+            # Asterisk automatically expands list of objects
+            *self.construct_object_types(oids),
             lexicographicMode=False
         )
 
         return self.fetch(handler)
+
+    def get_brief_name(self, full_name):
+        """! @brief Return the brief textual name of an SNMP OID
+
+        @param full_name STRING The full textual name
+        @return STRING - String containing the brief name
+        @details
+
+        Accepts a full textual SNMP OID name as generated
+        by pySNMP's prettyPrint() method, example:
+
+        READYNASOS-MIB::ataError.3
+
+        will return ataError
+        """
+
+        brief_name = re.search('(?<=::)(.*?)(?=\.)', full_name)
+
+        if type(brief_name.group()) is not str:
+            raise ValueError(
+                'The string passed to get_brief_name was not in the correct format')
+
+        return brief_name.group()
 
     def get_next(self, target, oids, credentials, port=161, engine=hlapi.SnmpEngine(), context=hlapi.ContextData()):
         """! @brief Get a single SNMP value
@@ -197,3 +232,18 @@ class SnmpQuery:
         )
 
         return self.fetch(handler)
+
+    def get_snmp_name(self, host, community_string):
+        """! @brief Get the name of an SNMP device
+
+        @param host STRING - The host name or IP address of the device
+        @param community_string STRING - The SNMP read only community string
+        @return STRING - The name of the device as defined by SNMPv2-MIB::sysName.0
+        """
+
+        host_name = self.get(host,
+                             [
+                                 {'SNMPv2-MIB': 'sysName.0'}
+                             ], self.construct_credentials(False, community_string))
+
+        return host_name[0]['SNMPv2-MIB::sysName.0']
