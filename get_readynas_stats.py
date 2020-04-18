@@ -1,4 +1,4 @@
-## @namespace get_readynas_stats
+## @file get_readynas_stats.py
 # @brief Get stats via SNMP from a Netgear ReadyNAS
 # @author Ross A. Stewart
 # @copyright 2019-2020
