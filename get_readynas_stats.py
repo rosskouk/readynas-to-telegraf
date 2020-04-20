@@ -45,8 +45,6 @@ class GetReadyNasStats(SnmpQuery):
     def process_readynas_disk_table(self):
         """! @brief Get disk information from a Netgear ReadyNAS
 
-        @return True on success
-        @return False on failure
         @details
 
         Gets information required for the SNMP disks measurement:
@@ -105,6 +103,64 @@ class GetReadyNasStats(SnmpQuery):
                     # Unexpected value found
                     raise ValueError(
                         'Unexpected SNMP value in method process_readynas_disk_table()')
+
+            measurement_list.append(fields)  # Add the measurement to the list
+
+        print(measurement_list)  # Print out the gathered statistics
+
+    def process_readynas_fan_table(self):
+        """! @brief Get fan information from a Netgear ReadyNAS
+
+        @details
+
+        Gets information required for the SNMP fans measurement:
+        - The Fan Number
+        - The Fan Speed (RPM)
+        - The Fan State
+            - This is returned as a string 'ok', this is converted to an integer 0 for OK
+              1 for FAULTY
+
+        from a Netgear ReadyNAS and inserts them into InfluxDB
+        """
+
+        measurement_list = []  # Blank list to hold dictionaries of measurements
+
+        fan_entries = self.get_next(self.host,
+                                    [
+                                        {'READYNASOS-MIB': 'fanNumber'},
+                                        {'READYNASOS-MIB': 'fanRPM'},
+                                        {'READYNASOS-MIB': 'fanStatus'}
+                                    ], self.construct_credentials(False, self.community_string))
+
+        for fan_entry in fan_entries:
+            # Iterate over list of measurements
+
+            fields = {}  # Define a blank dictionary to hold the fields
+
+            # Store the hostname
+            fields['host'] = self.get_snmp_name(
+                self.host, self.community_string)
+
+            for key, value in fan_entry.items():
+                # Iterate over measurement fields
+                if self.get_brief_name(key) == 'fanNumber':
+                    # Process fanNumber
+                    fields['fan_number'] = value
+                elif self.get_brief_name(key) == 'fanRPM':
+                    # Process fanRPM
+                    fields['fan_speed_rpm'] = value
+                elif self.get_brief_name(key) == 'fanStatus':
+                    # Process fanStatus
+                    if value == 'ok':
+                        # fan is good
+                        fields['fan_status'] = 0
+                    else:
+                        # fan is bad
+                        fields['fan_status'] = 1
+                else:
+                    # Unexpected value found
+                    raise ValueError(
+                        'Unexpected SNMP value in method process_readynas_fan_table()')
 
             measurement_list.append(fields)  # Add the measurement to the list
 
