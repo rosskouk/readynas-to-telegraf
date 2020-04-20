@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 ## @file main.py
 # @brief Main program
 # @author Ross A. Stewart
@@ -9,12 +11,13 @@
 # a Netgear ReadyNAS via SNMP
 #
 # Required libraries:
-#
+#   - os
 #   - GetReadyNasStats
 #       - From local module get_readynas_stats
 #
 
 import os
+import argparse
 
 import yaml
 
@@ -58,6 +61,34 @@ readynas_host = cfg['readynas']['host']
 # @brief STRING - The SNMP community string of the ReadyNAS device
 readynas_snmp_community = cfg['readynas']['community']
 
-stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+#
+# Parse CLI arguments
+#
 
-stats.process_readynas_disk_table()  # Get disk statistics
+## @var arg_parser
+# @brief OBJECT - An instance of ArgumentParser to process CLI options
+arg_parser = argparse.ArgumentParser(description='Get SNMP statistics from a Netgear ReadyNAS')
+
+## @var arg_group
+# @brief OBJECT - A mutually exclusive ArgumentParser group
+# @details This group holds all CLI options and ensures that only one is chosen
+arg_group = arg_parser.add_mutually_exclusive_group(required=True)
+
+## @cond INTERNAL
+# Have Doxygen skip this line
+arg_group.add_argument('-d', '--disk', action='store_true', dest='disk', help='get disk statistics')
+# @endcond
+
+## @var args
+# @brief OBJECT - An object containing the parsed CLI arguments
+# @details This group holds all CLI options and ensures that only one is chosen
+args = arg_parser.parse_args()
+
+
+#
+# Execute methods
+#
+
+if args.disk is True:
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats.process_readynas_disk_table()  # Get disk statistics
