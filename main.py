@@ -76,7 +76,8 @@ arg_group = arg_parser.add_mutually_exclusive_group(required=True)
 
 ## @cond INTERNAL
 # Have Doxygen skip this line
-arg_group.add_argument('-d', '--disk', action='store_true', dest='disk', help='get disk statistics')
+arg_group.add_argument('-d', '--disks', action='store_true', dest='disks', help='get disk statistics')
+arg_group.add_argument('-f', '--fans', action='store_true', dest='fans', help='get fan statistics')
 # @endcond
 
 ## @var args
@@ -89,6 +90,10 @@ args = arg_parser.parse_args()
 # Execute methods
 #
 
-if args.disk is True:
+if args.disks is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
     stats.process_readynas_disk_table()  # Get disk statistics
+
+if args.fans is True:
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats.process_readynas_fan_table()  # Get fan statistics
