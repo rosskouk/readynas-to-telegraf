@@ -215,3 +215,94 @@ class GetReadyNasStats(SnmpQuery):
             measurement_list.append(fields)  # Add the measurement to the list
 
         print(measurement_list)  # Print out the gathered statistics
+
+    def process_readynas_volume_table(self):
+        """! @brief Get volume information from a Netgear ReadyNAS
+
+        @details
+
+        Gets information required for the SNMP volumes measurement:
+        - The Volume Number
+        - The Volume RAID Level
+        - The Volume Status
+          - The READYNASOS-MIB states that the following string
+            values are generated:
+            - REDUNDANT = 0
+            - DEGRADED = 1
+            - UNPROTECTED = 2
+            - DEAD = 3
+            - INACTIVE = 4
+            - UNKNOWN = 5
+        - The Volume Site
+            - Reported in MB
+        - The Volume Free Space
+            - Reported in MB
+
+            These values are translated into integers to ease monitoring
+
+        The information is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
+        """
+
+        measurement_list = []  # Blank list to hold dictionaries of measurements
+
+        volume_entries = self.get_next(self.host,
+                                       [
+                                           {'READYNASOS-MIB': 'volumeNumber'},
+                                           {'READYNASOS-MIB': 'volumeRAIDLevel'},
+                                           {'READYNASOS-MIB': 'volumeStatus'},
+                                           {'READYNASOS-MIB': 'volumeSize'},
+                                           {'READYNASOS-MIB': 'volumeFreeSpace'}
+                                       ], self.construct_credentials(False, self.community_string))
+
+        for volume_entry in volume_entries:
+            # Iterate over list of measurements
+
+            fields = {}  # Define a blank dictionary to hold the fields
+
+            # Store the hostname
+            fields['host'] = self.get_snmp_name(
+                self.host, self.community_string)
+
+            for key, value in volume_entry.items():
+                # Iterate over measurement fields
+                if self.get_brief_name(key) == 'volumeNumber':
+                    # Process volumeNumber
+                    fields['volume_number'] = value
+                elif self.get_brief_name(key) == 'volumeRAIDLevel':
+                    # Process volumeRAIDLevel
+                    fields['volume_raid_level'] = value
+                elif self.get_brief_name(key) == 'volumeStatus':
+                    # Process volumeStatus
+                    if value == 'REDUNDANT':
+                        # Volume OK
+                        fields['volume_status'] = 0
+                    elif value == 'DEGRADED':
+                        # Volume is degraded - WARN
+                        fields['volume_status'] = 1
+                    elif value == 'UNPROTECTED':
+                        # Volume is unprotected - WARN
+                        fields['volume_status'] = 2
+                    elif value == 'DEAD':
+                        # Volume is dead - CRIT
+                        fields['volume_status'] = 3
+                    elif value == 'INACTIVE':
+                        # Volume is inactive - CRIT
+                        fields['volume_status'] = 4
+                    elif value == 'UNKNOWN':
+                        # Volume status is unknown - CRIT
+                        fields['volume_status'] = 5
+                elif self.get_brief_name(key) == 'volumeSize':
+                    # Process volumeSize
+                    fields['volume_total_size_mb'] = value
+                elif self.get_brief_name(key) == 'volumeFreeSpace':
+                    # Process volumeFreeSpace
+                    fields['volume_free_space_mb'] = value
+                else:
+                    # Unexpected value found
+                    raise ValueError(
+                        'Unexpected SNMP value in method process_readynas_volume_table()')
+
+            measurement_list.append(fields)  # Add the measurement to the list
+
+        print(measurement_list)  # Print out the gathered statistics
