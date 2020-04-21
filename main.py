@@ -79,6 +79,7 @@ arg_group = arg_parser.add_mutually_exclusive_group(required=True)
 arg_group.add_argument('-d', '--disks', action='store_true', dest='disks', help='get disk statistics')
 arg_group.add_argument('-f', '--fans', action='store_true', dest='fans', help='get fan statistics')
 arg_group.add_argument('-t', '--temp', action='store_true', dest='temp', help='get temperature statistics')
+arg_group.add_argument('-v', '--volumes', action='store_true', dest='volumes', help='get volume statistics')
 # @endcond
 
 ## @var args
@@ -102,3 +103,7 @@ if args.fans is True:
 if args.temp is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
     stats.process_readynas_temperature_table()  # Get temperature statistics
+
+if args.volumes is True:
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats.process_readynas_volume_table()  # Get volume statistics
