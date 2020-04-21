@@ -4,6 +4,8 @@
 # @brief Main program
 # @author Ross A. Stewart
 # @copyright 2019-2020
+# @par License
+# MIT License
 # @date 18th April 2020
 # @details
 #
@@ -12,6 +14,8 @@
 #
 # Required libraries:
 #   - os
+#   - argparse
+#   - yaml
 #   - GetReadyNasStats
 #       - From local module get_readynas_stats
 #
@@ -80,6 +84,7 @@ arg_group.add_argument('-d', '--disks', action='store_true', dest='disks', help=
 arg_group.add_argument('-f', '--fans', action='store_true', dest='fans', help='get fan statistics')
 arg_group.add_argument('-t', '--temp', action='store_true', dest='temp', help='get temperature statistics')
 arg_group.add_argument('-v', '--volumes', action='store_true', dest='volumes', help='get volume statistics')
+arg_group.add_argument('-i', '--interfaces', action='store_true', dest='interfaces', help='get interface statistics')
 # @endcond
 
 ## @var args
@@ -107,3 +112,7 @@ if args.temp is True:
 if args.volumes is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
     stats.process_readynas_volume_table()  # Get volume statistics
+
+if args.interfaces is True:
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    print(stats.get_snmp_interfaces())  # Get interface statistics
