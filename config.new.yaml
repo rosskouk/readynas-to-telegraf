@@ -1,6 +1,6 @@
-# Readynas-to-InfluxDB Configuration File
+# Readynas-to-Telegraf Configuration File
 #
-# Copyright (c) 2020 Ross A. Stewart (rosskouk@gmail.com)
+# Copyright (c) 2020 Ross A. Stewart
 #
 # You should have received a copy of the MIT license with
 # this file. If not, please or visit : https://github.com/rosskouk/readynas-to-influxdb/blob/master/LICENSE
@@ -12,11 +12,3 @@
 readynas:
     host: nas.example.com
     community: snmp_community_string
-
-# InfluxDB optins
-influxdb:
-    host: influxdb.example.com
-    port: 8086
-    user: username
-    password: password
-    dbname: database_name

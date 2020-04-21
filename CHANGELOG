@@ -1,0 +1,116 @@
+v1.0.0
+======
+
+  - e9a007f 
+    - Updated documentation in config.new.yaml
+  - 87aeba0 
+    - Updated documentation in main.py 
+    - Added code to main.py to enable running get_snmp_interfaces() method
+  - 09e3e8a 
+    - Updated README.md
+  - 0caa381 
+    - Added SnmpUtility to __init__.py
+  - 3481f3f 
+    - Updated python_snmp_utilities submodule
+  - 422a609 
+    - Removed old file gather_readynas_stats.py
+  - 4b3a55d 
+    - Added code to allow running of GetReadyNasStats::process_readynas_volume_table() method
+  - 1378008 
+    - Modified GetReadyNasStats to inherit new class SnmpUtility instead of SnmpQuery 
+    - Updated constructor to pass arguments to parent constructor 
+    - Updated called to the get_snmp_name() method as this no longer required parameters
+  - 69feabc 
+    - Added method GetReadyNasStats::process_readynas_volume_table()
+  - 05582c8 
+    - Added code to run GetReadyNasStats::process_readynas_temperature_table() method
+  - 9bbe265 
+    - Improved documentation in all methods 
+    - Added method GetReadyNasStats::process_readynas_temperature_table() to get temperature information
+  - e445ba4 
+    - Added method GetReadyNasStats::process_readynas_disk_table() method to get_readynas_stats.py
+  - fdf519e 
+    - Added code to run GetReadyNasStats::process_readynas_fan_table() method
+  - ec0e627 
+    - Removed email address from LICENSE
+  - 65de041 
+    - Updated README.md
+  - 848be41 
+    - Added code to handle command line option to main.py
+  - bb422db 
+    - Added main.py 
+    - main.py will act as the main script for the program which will in turn access the methods available in the GetReadyNasStats class
+  - 2da7139 
+    - Updated file documentation
+  - f98d52c 
+    - Updated snmp_utilities submodule
+  - f048441 
+    - Updated README.md
+  - a8f9139 
+    - Added __init__.py to submodules to resolve incorrect Doxygen class hierarchy diagram
+  - cae9734 
+    - Renamed get_readynas_disk_stats.py to get_readynas_stats.py
+  - 4650804 
+    - Updated snmp_utilities submodule
+  - 0c309f8 
+    - Removed snmp_utilities.py as this functionality will now be provided by a submodule
+  - e634bb3 
+    - Added snmp_utilities as a git submodule
+  - 96cbfd1 
+    - Moved process_readynas_disk_table() to a separate module and modified to output Telegraf compatible JSON
+  - 74bac19 
+    - Removed influxdb_utilities as these are no longer required
+  - b0443b9 
+    - Added READYNASOS pySNMP compiled mib
+  - bfc6aff 
+    - Updated config.new.yaml
+  - 072fb57 
+    - Added additional MIB search path to SnmpQuery::construct_object_types()
+  - 1ba35ef 
+    - Updated README.md
+  - f24d444 
+    - Added CHANGELOG
+
+
+v0.0.9
+======
+  - 70ea971 Merge pull request #1 from rosskouk/release-v1.0.0
+    - b7d6b8b 
+      - Applied PEP8 style guidelines
+    - a6cd395 
+      - Updated README.md
+    - 4037b28 
+      - Updated class documentation
+    - d56f950 
+      - Added process_readynas_fan_table() 
+      - Added process_readynas_temperature_table() 
+      - Added process_readynas_volume_table() 
+      - Added process_readynas_interface_table()
+    - a7d4d16 
+      - Added class InfluxDbOps to allow interactions with InfluxDB issues
+    - 1cb5a36 
+      - Updated .gitignore
+    - 2699493 
+      - Updated class documentation 
+      - Applied Python PEP8 guidelines 
+      - Added get_brief_name() which returns the textual name of an OID 
+      - get_snmp_name() which returns a devices SNMP name
+    - f47637f 
+      - Created first version of main program 
+      - Added function process_readynas_disk_table() to get disk statistics
+    - 56a9dcf 
+      - Added sample config file
+    - a7f1e40 
+      - Updated exception documentation for SnmpQuery::construct_object_types()
+    - a6e822e 
+      - Updated SnmpQuery::construct_object_types() to allow textual names with an index to be handled correctly
+    - 0425622 
+      - Updated README.md
+    - 8b1c931 
+      - Added .gitignore
+    - c52f419 
+      - Added SnmpQuery class with support for SNMP v1 and v2c get and getNext operations
+    - a1c7ce9 
+      - Updated LICENSE
+    - b9ff4ff 
+      - Initial commit
