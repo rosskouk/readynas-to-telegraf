@@ -45,3 +45,47 @@ After cloning the repository run the following commands:
 git submodule init
 git submodule update
 ```
+
+### Example Telegraf Configuration
+
+```bash
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -d" ]
+  timeout = "5s"
+  name_override = "snmp_disk_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host", "disk_number"]
+
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -f" ]
+  timeout = "5s"
+  name_override = "snmp_fan_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host", "fan_number"]
+
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -t" ]
+  timeout = "5s"
+  name_override = "snmp_temperature_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host", "temperature_number"]
+
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -v" ]
+  timeout = "5s"
+  name_override = "snmp_raid_volume_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host", "volume_number"]
+
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -i" ]
+  timeout = "5s"
+  name_override = "snmp_interface_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host", "ifName"]
+```
