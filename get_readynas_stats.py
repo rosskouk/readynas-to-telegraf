@@ -58,7 +58,8 @@ class GetReadyNasStats(SnmpQuery):
             - This is reported in Celsius although the MIB states the value is reported in
             Fahrenheit
 
-        from a Netgear ReadyNAS and inserts them into InfluxDB
+        The information is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
         """
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
@@ -120,7 +121,8 @@ class GetReadyNasStats(SnmpQuery):
             - This is returned as a string 'ok', this is converted to an integer 0 for OK
               1 for FAULTY
 
-        from a Netgear ReadyNAS and inserts them into InfluxDB
+        The information is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
         """
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
@@ -161,6 +163,54 @@ class GetReadyNasStats(SnmpQuery):
                     # Unexpected value found
                     raise ValueError(
                         'Unexpected SNMP value in method process_readynas_fan_table()')
+
+            measurement_list.append(fields)  # Add the measurement to the list
+
+        print(measurement_list)  # Print out the gathered statistics
+
+    def process_readynas_temperature_table(self):
+        """! @brief Get temperature information from a Netgear ReadyNAS
+
+        @details
+
+        Gets information required for the SNMP temperatures measurement:
+        - The Temperature Number
+        - The Temperature Value (C)
+          - The READYNASOS-MIB states that units are in Fahrenheit, this is incorrect
+
+        The information is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
+        """
+
+        measurement_list = []  # Blank list to hold dictionaries of measurements
+
+        temperature_entries = self.get_next(self.host,
+                                            [
+                                                {'READYNASOS-MIB': 'temperatureNumber'},
+                                                {'READYNASOS-MIB': 'temperatureValue'}
+                                            ], self.construct_credentials(False, self.community_string))
+
+        for temperature_entry in temperature_entries:
+            # Iterate over list of measurements
+
+            fields = {}  # Define a blank dictionary to hold the fields
+
+            # Store the hostname
+            fields['host'] = self.get_snmp_name(
+                self.host, self.community_string)
+
+            for key, value in temperature_entry.items():
+                # Iterate over measurement fields
+                if self.get_brief_name(key) == 'temperatureNumber':
+                    # Process temperatureNumber
+                    fields['temperature_number'] = value
+                elif self.get_brief_name(key) == 'temperatureValue':
+                    # Process temperatureValue
+                    fields['temperature_celsius'] = value
+                else:
+                    # Unexpected value found
+                    raise ValueError(
+                        'Unexpected SNMP value in method process_readynas_temperature_table()')
 
             measurement_list.append(fields)  # Add the measurement to the list
 
