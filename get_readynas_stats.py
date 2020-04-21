@@ -11,36 +11,29 @@
 # via SNMP
 #
 # Required libraries:
-#   - SnmpQuery
+#   - SnmpUtility
 #       - From local module snmp_utilities - [https://github.com/rosskouk/python_snmp_utilities]
 #
 
-from submodules.python_snmp_utilities.snmp_utilities import SnmpQuery
+from submodules.python_snmp_utilities.snmp_utilities import SnmpUtility
 
 
-class GetReadyNasStats(SnmpQuery):
+class GetReadyNasStats(SnmpUtility):
     """! @brief Netgear ReadyNAS Stats
 
     @details Get statistics from a Netgear ReadyNAS via SNMP
     """
 
-    def __init__(self, host, community_string):
+    def __init__(self, *args):
         """! @brief Constructor
 
-        @param host STRING - The hostname of the ReadyNAS device
-        @param community_string STRING - The SNMP community string set on the ReadyNAS device
+        @param args LIST - Arguments to pass to the parent constructor, hostname and community string
         @details
 
-        Sets required parameters
+        Passes the SNMP device hostname and community string to the parent constructor
         """
 
-        ## @var host
-        # @brief STRING - The hostname of the ReadyNAS device
-        self.host = host
-
-        ## @var host
-        # @brief STRING - The SNMP community string set on the ReadyNAS device
-        self.community_string = community_string
+        super().__init__(*args)
 
     def process_readynas_disk_table(self):
         """! @brief Get disk information from a Netgear ReadyNAS
@@ -78,8 +71,7 @@ class GetReadyNasStats(SnmpQuery):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name(
-                self.host, self.community_string)
+            fields['host'] = self.get_snmp_name()
 
             for key, value in disk_entry.items():
                 # Iterate over measurement fields
@@ -140,8 +132,7 @@ class GetReadyNasStats(SnmpQuery):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name(
-                self.host, self.community_string)
+            fields['host'] = self.get_snmp_name()
 
             for key, value in fan_entry.items():
                 # Iterate over measurement fields
@@ -196,8 +187,7 @@ class GetReadyNasStats(SnmpQuery):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name(
-                self.host, self.community_string)
+            fields['host'] = self.get_snmp_name()
 
             for key, value in temperature_entry.items():
                 # Iterate over measurement fields
@@ -261,8 +251,7 @@ class GetReadyNasStats(SnmpQuery):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name(
-                self.host, self.community_string)
+            fields['host'] = self.get_snmp_name()
 
             for key, value in volume_entry.items():
                 # Iterate over measurement fields
