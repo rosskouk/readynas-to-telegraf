@@ -13,15 +13,17 @@
 # a Netgear ReadyNAS via SNMP
 #
 # Required libraries:
-#   - os
 #   - argparse
+#   - json
+#   - os
 #   - yaml
 #   - GetReadyNasStats
 #       - From local module get_readynas_stats
 #
 
-import os
 import argparse
+import json
+import os
 
 import yaml
 
@@ -115,4 +117,4 @@ if args.volumes is True:
 
 if args.interfaces is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
-    print(stats.get_snmp_interfaces())  # Get interface statistics
+    print(json.dumps(stats.get_snmp_interfaces()))  # Get interface statistics
