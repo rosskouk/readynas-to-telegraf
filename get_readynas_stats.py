@@ -11,9 +11,12 @@
 # via SNMP
 #
 # Required libraries:
+#   - json
 #   - SnmpUtility
 #       - From local module snmp_utilities - [https://github.com/rosskouk/python_snmp_utilities]
 #
+
+import json
 
 from submodules.python_snmp_utilities.snmp_utilities import SnmpUtility
 
@@ -97,9 +100,9 @@ class GetReadyNasStats(SnmpUtility):
                     raise ValueError(
                         'Unexpected SNMP value in method process_readynas_disk_table()')
 
-            measurement_list.append(fields)  # Add the measurement to the list
+            measurement_list.append(fields)
 
-        print(measurement_list)  # Print out the gathered statistics
+        print(json.dumps(measurement_list))  # Convert measurements to JSON and print them
 
     def process_readynas_fan_table(self):
         """! @brief Get fan information from a Netgear ReadyNAS
@@ -157,7 +160,7 @@ class GetReadyNasStats(SnmpUtility):
 
             measurement_list.append(fields)  # Add the measurement to the list
 
-        print(measurement_list)  # Print out the gathered statistics
+        print(json.dumps(measurement_list))  # Print out the gathered statistics
 
     def process_readynas_temperature_table(self):
         """! @brief Get temperature information from a Netgear ReadyNAS
@@ -204,7 +207,7 @@ class GetReadyNasStats(SnmpUtility):
 
             measurement_list.append(fields)  # Add the measurement to the list
 
-        print(measurement_list)  # Print out the gathered statistics
+        print(json.dumps(measurement_list))  # Print out the gathered statistics
 
     def process_readynas_volume_table(self):
         """! @brief Get volume information from a Netgear ReadyNAS
@@ -294,4 +297,4 @@ class GetReadyNasStats(SnmpUtility):
 
             measurement_list.append(fields)  # Add the measurement to the list
 
-        print(measurement_list)  # Print out the gathered statistics
+        print(json.dumps(measurement_list))  # Print out the gathered statistics
