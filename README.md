@@ -50,7 +50,7 @@ git submodule update
 
 ```bash
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -d" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -d" ]
   timeout = "5s"
   name_override = "snmp_disk_stats"
   name_suffix = ""
@@ -58,7 +58,7 @@ git submodule update
   tag_keys = [ "host", "disk_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -f" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -f" ]
   timeout = "5s"
   name_override = "snmp_fan_stats"
   name_suffix = ""
@@ -66,7 +66,7 @@ git submodule update
   tag_keys = [ "host", "fan_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -t" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -t" ]
   timeout = "5s"
   name_override = "snmp_temperature_stats"
   name_suffix = ""
@@ -74,7 +74,7 @@ git submodule update
   tag_keys = [ "host", "temperature_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -v" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -v" ]
   timeout = "5s"
   name_override = "snmp_raid_volume_stats"
   name_suffix = ""
@@ -82,7 +82,7 @@ git submodule update
   tag_keys = [ "host", "volume_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -i" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -i" ]
   timeout = "5s"
   name_override = "snmp_interface_stats"
   name_suffix = ""
