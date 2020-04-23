@@ -46,7 +46,14 @@ git submodule init
 git submodule update
 ```
 
-### Example Telegraf Configuration
+#### Telegraf
+
+Install the program as you would any other script that will be used by the **exec** plugin.
+You must copy the READYNASOS-MIB to a location in pySNMPs path, for example /etc/telegraf/.pysnmp/mibs
+
+Once the MIB is installed add a configuration file for the readynas-to-telegraf, example configuration is below.
+
+##### Example Telegraf Configuration
 
 ```bash
 [[inputs.exec]]
