@@ -3,25 +3,33 @@
 ## @file main.py
 # @brief Main program
 # @author Ross A. Stewart
-# @copyright 2019-2020
+# @copyright 2020
 # @par License
 # MIT License
 # @date 18th April 2020
 # @details
 #
 # This module executes methods which gather statistics from
-# a Netgear ReadyNAS via SNMP
+# a Netgear ReadyNAS via SNMP.
+#
 #
 # Required libraries:
-#   - os
 #   - argparse
+#   - json
+#   - os
 #   - yaml
 #   - GetReadyNasStats
 #       - From local module get_readynas_stats
 #
+#
+# You should have received a copy of the MIT license with
+# this file. If not, please or visit :
+# https://github.com/rosskouk/readynas-to-influxdb/blob/master/LICENSE
 
-import os
+
 import argparse
+import json
+import os
 
 import yaml
 
@@ -115,4 +123,4 @@ if args.volumes is True:
 
 if args.interfaces is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
-    print(stats.get_snmp_interfaces())  # Get interface statistics
+    print(json.dumps(stats.get_snmp_interfaces()))  # Get interface statistics

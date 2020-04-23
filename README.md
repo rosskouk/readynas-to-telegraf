@@ -46,11 +46,18 @@ git submodule init
 git submodule update
 ```
 
-### Example Telegraf Configuration
+#### Telegraf
+
+Install the program as you would any other script that will be used by the **exec** plugin.
+You must copy the READYNASOS-MIB to a location in pySNMPs path, for example /etc/telegraf/.pysnmp/mibs
+
+Once the MIB is installed add a configuration file for the readynas-to-telegraf, example configuration is below.
+
+##### Example Telegraf Configuration
 
 ```bash
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -d" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -d" ]
   timeout = "5s"
   name_override = "snmp_disk_stats"
   name_suffix = ""
@@ -58,7 +65,7 @@ git submodule update
   tag_keys = [ "host", "disk_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -f" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -f" ]
   timeout = "5s"
   name_override = "snmp_fan_stats"
   name_suffix = ""
@@ -66,7 +73,7 @@ git submodule update
   tag_keys = [ "host", "fan_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -t" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -t" ]
   timeout = "5s"
   name_override = "snmp_temperature_stats"
   name_suffix = ""
@@ -74,7 +81,7 @@ git submodule update
   tag_keys = [ "host", "temperature_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -v" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -v" ]
   timeout = "5s"
   name_override = "snmp_raid_volume_stats"
   name_suffix = ""
@@ -82,7 +89,7 @@ git submodule update
   tag_keys = [ "host", "volume_number"]
 
 [[inputs.exec]]
-  commands = [ "/etc/telegraf/scripts/snmp_readynas/get_readynas_stats.py -i" ]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -i" ]
   timeout = "5s"
   name_override = "snmp_interface_stats"
   name_suffix = ""

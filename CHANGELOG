@@ -1,6 +1,31 @@
 v1.0.0
 ======
 
+  - b798fef 
+    - Updated documentation in get_readynas_stats.py
+  - 2b55269 
+    - Updated documentation in main.py
+  - a7144a4 
+    - Updated README.md
+  - 52396a8 
+    - Added used disk space field to GetReadyNasStats::process_readynas_volume_table()
+  - 4587f85 
+    - Updated get_readynas_stats.py   
+      - Added JSON library   
+      - Converted output of GetReadyNasStats::process_readynas_disk_table() method to JSON   
+      - Converted output of process_readynas_fan_table() method to JSON   
+      - Converted output of process_readynas_temperature_table() method to JSON   
+      - Converted output of process_readynas_volume_table() method to JSON
+  - d6e894b 
+    - Updated main.py   
+      - Added JSON library to main.py 
+      - Modified call to stats.get_snmp_interfaces() and converted output to JSON
+  - 73c14eb 
+    - Updated README.md
+  - 7b1343c 
+    - Updated submodule URL in .gitmodules
+  - 11621b3 
+    - Updated CHANGELOG
   - e9a007f 
     - Updated documentation in config.new.yaml
   - 87aeba0 
