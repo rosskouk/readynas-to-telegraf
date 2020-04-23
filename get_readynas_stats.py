@@ -1,7 +1,7 @@
 ## @file get_readynas_stats.py
 # @brief Get stats via SNMP from a Netgear ReadyNAS
 # @author Ross A. Stewart
-# @copyright 2019-2020
+# @copyright 2020
 # @par License
 # MIT License
 # @date 16th April 2020
@@ -15,6 +15,11 @@
 #   - SnmpUtility
 #       - From local module snmp_utilities - [https://github.com/rosskouk/python_snmp_utilities]
 #
+#
+# You should have received a copy of the MIT license with
+# this file. If not, please or visit : 
+# https://github.com/rosskouk/readynas-to-influxdb/blob/master/LICENSE
+
 
 import json
 
