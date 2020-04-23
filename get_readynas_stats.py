@@ -226,10 +226,12 @@ class GetReadyNasStats(SnmpUtility):
             - DEAD = 3
             - INACTIVE = 4
             - UNKNOWN = 5
-        - The Volume Site
+        - The Volume Total Size
             - Reported in MB
         - The Volume Free Space
             - Reported in MB
+        - The Volume Used Space
+            - Calculated via: \f$Volume Used Space = Volume Total Size - Volume Free Space\f$
 
             These values are translated into integers to ease monitoring
 
@@ -251,6 +253,8 @@ class GetReadyNasStats(SnmpUtility):
         for volume_entry in volume_entries:
             # Iterate over list of measurements
 
+            free_space = None  # Variable to hold free space value
+            total_space = None  # Variable to hold total volume size
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
@@ -286,14 +290,24 @@ class GetReadyNasStats(SnmpUtility):
                         fields['volume_status'] = 5
                 elif self.get_brief_name(key) == 'volumeSize':
                     # Process volumeSize
+
+                    total_space = value  # Store the total space to allow calculation of used space
                     fields['volume_total_size_mb'] = value
+
                 elif self.get_brief_name(key) == 'volumeFreeSpace':
                     # Process volumeFreeSpace
+
+                    free_space = value  # Store the free space to allow calculation of used space
                     fields['volume_free_space_mb'] = value
                 else:
                     # Unexpected value found
                     raise ValueError(
                         'Unexpected SNMP value in method process_readynas_volume_table()')
+
+                if total_space is not None and free_space is not None:
+                    # Calculate used space and add the value to the measurement
+                    used_space = total_space - free_space
+                    fields['volume_used_space_mb'] = used_space
 
             measurement_list.append(fields)  # Add the measurement to the list
 
