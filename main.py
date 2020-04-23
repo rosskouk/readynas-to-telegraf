@@ -3,14 +3,15 @@
 ## @file main.py
 # @brief Main program
 # @author Ross A. Stewart
-# @copyright 2019-2020
+# @copyright 2020
 # @par License
 # MIT License
 # @date 18th April 2020
 # @details
 #
 # This module executes methods which gather statistics from
-# a Netgear ReadyNAS via SNMP
+# a Netgear ReadyNAS via SNMP.
+#
 #
 # Required libraries:
 #   - argparse
@@ -20,6 +21,11 @@
 #   - GetReadyNasStats
 #       - From local module get_readynas_stats
 #
+#
+# You should have received a copy of the MIT license with
+# this file. If not, please or visit :
+# https://github.com/rosskouk/readynas-to-influxdb/blob/master/LICENSE
+
 
 import argparse
 import json
