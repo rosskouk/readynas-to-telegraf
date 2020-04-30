@@ -127,4 +127,4 @@ if args.volumes is True:
 
 if args.interfaces is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
-    print(json.dumps(stats.get_snmp_interfaces()))  # Get interface statistics
+    stats.process_readynas_interface_table()  # Get interface statistics

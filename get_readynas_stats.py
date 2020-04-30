@@ -173,6 +173,40 @@ class GetReadyNasStats(SnmpUtility):
 
         print(json.dumps(measurement_list))  # Print out the gathered statistics
 
+    def process_readynas_interface_table(self):
+        """! @brief Get interface information from a Netgear ReadyNAS
+
+        @details
+
+        Gets information required for the SNMP interfaces measurement as returned
+        by get_snmp_interfaces()
+
+        The information is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
+        """
+
+        measurement_list = []  # Blank list to hold dictionaries of measurements
+
+        interface_entries = self.get_snmp_interfaces()
+
+        device_name = self.get_snmp_name()
+
+        for interface_entry in interface_entries:
+            # Iterate over list of measurements
+
+            fields = {}  # Define a blank dictionary to hold the fields
+
+            # Store the hostname
+            fields['host'] = device_name['sysName']
+
+            for key, value in interface_entry.items():
+                # Iterate over measurement fields
+                fields[key] = value
+
+            measurement_list.append(fields)
+
+        print(json.dumps(measurement_list))  # Convert measurements to JSON and print them
+
     def process_readynas_temperature_table(self):
         """! @brief Get temperature information from a Netgear ReadyNAS
 
