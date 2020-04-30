@@ -51,7 +51,7 @@ try:
     with open(program_directory + '/config.yaml', 'r') as ymlfile:
         ## @var cfg
         # @brief DICTIONARY - A dictionary representing the YAML configuration file
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
 except FileNotFoundError:
     print('Configuration file not found.')
