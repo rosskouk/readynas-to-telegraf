@@ -65,6 +65,10 @@ except:
 # Set Variables
 #
 
+## @var snmp_version
+# @brief INTEGER - SNMP version to use 1, 2 or 3
+snmp_version = cfg['snmp']['version']
+
 ## @var readynas_host
 # @brief STRING - The hostname of the ReadyNAS device
 readynas_host = cfg['readynas']['host']
@@ -106,21 +110,21 @@ args = arg_parser.parse_args()
 #
 
 if args.disks is True:
-    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     stats.process_readynas_disk_table()  # Get disk statistics
 
 if args.fans is True:
-    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     stats.process_readynas_fan_table()  # Get fan statistics
 
 if args.temp is True:
-    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     stats.process_readynas_temperature_table()  # Get temperature statistics
 
 if args.volumes is True:
-    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     stats.process_readynas_volume_table()  # Get volume statistics
 
 if args.interfaces is True:
-    stats = GetReadyNasStats(readynas_host, readynas_snmp_community)  # Create a new GetReadyNasStats object
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     print(json.dumps(stats.get_snmp_interfaces()))  # Get interface statistics
