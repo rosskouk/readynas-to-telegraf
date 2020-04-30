@@ -17,8 +17,8 @@
 #
 #
 # You should have received a copy of the MIT license with
-# this file. If not, please or visit : 
-# https://github.com/rosskouk/readynas-to-influxdb/blob/master/LICENSE
+# this file. If not, please or visit :
+# https://github.com/rosskouk/readynas-to-telegraf/blob/master/LICENSE
 
 
 import json
@@ -65,13 +65,16 @@ class GetReadyNasStats(SnmpUtility):
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
 
-        disk_entries = self.get_next(self.host,
-                                     [
-                                         {'READYNASOS-MIB': 'diskNumber'},
-                                         {'READYNASOS-MIB': 'ataError'},
-                                         {'READYNASOS-MIB': 'diskState'},
-                                         {'READYNASOS-MIB': 'diskTemperature'}
-                                     ], self.construct_credentials(False, self.community_string))
+        oids = [
+            'READYNASOS-MIB::diskNumber',
+            'READYNASOS-MIB::ataError',
+            'READYNASOS-MIB::diskState',
+            'READYNASOS-MIB::diskTemperature'
+        ]
+
+        disk_entries = self.bulkwalk(oids)
+
+        device_name = self.get_snmp_name()
 
         for disk_entry in disk_entries:
             # Iterate over list of measurements
@@ -79,17 +82,17 @@ class GetReadyNasStats(SnmpUtility):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name()
+            fields['host'] = device_name['sysName']
 
             for key, value in disk_entry.items():
                 # Iterate over measurement fields
-                if self.get_brief_name(key) == 'diskNumber':
+                if key == 'diskNumber':
                     # Process diskNumber
                     fields['disk_number'] = value
-                elif self.get_brief_name(key) == 'ataError':
+                elif key == 'ataError':
                     # Process ataError
                     fields['ata_error_count'] = value
-                elif self.get_brief_name(key) == 'diskState':
+                elif key == 'diskState':
                     # Process diskState
                     if value == 'ONLINE':
                         # Disk is good
@@ -97,7 +100,7 @@ class GetReadyNasStats(SnmpUtility):
                     else:
                         # Disk is bad
                         fields['disk_status'] = 1
-                elif self.get_brief_name(key) == 'diskTemperature':
+                elif key == 'diskTemperature':
                     # Process diskTemperature
                     fields['disk_temperature'] = value
                 else:
@@ -127,30 +130,33 @@ class GetReadyNasStats(SnmpUtility):
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
 
-        fan_entries = self.get_next(self.host,
-                                    [
-                                        {'READYNASOS-MIB': 'fanNumber'},
-                                        {'READYNASOS-MIB': 'fanRPM'},
-                                        {'READYNASOS-MIB': 'fanStatus'}
-                                    ], self.construct_credentials(False, self.community_string))
+        oids = [
+            'READYNASOS-MIB::fanNumber',
+            'READYNASOS-MIB::fanRPM',
+            'READYNASOS-MIB::fanStatus'
+        ]
 
-        for fan_entry in fan_entries:
+        fan_entries = self.bulkwalk(oids)
+
+        device_name = self.get_snmp_name()
+
+        for fan_entry in fan_entries.values():
             # Iterate over list of measurements
 
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name()
+            fields['host'] = device_name['sysName']
 
             for key, value in fan_entry.items():
                 # Iterate over measurement fields
-                if self.get_brief_name(key) == 'fanNumber':
+                if key == 'fanNumber':
                     # Process fanNumber
                     fields['fan_number'] = value
-                elif self.get_brief_name(key) == 'fanRPM':
+                elif key == 'fanRPM':
                     # Process fanRPM
                     fields['fan_speed_rpm'] = value
-                elif self.get_brief_name(key) == 'fanStatus':
+                elif key == 'fanStatus':
                     # Process fanStatus
                     if value == 'ok':
                         # fan is good
@@ -183,26 +189,29 @@ class GetReadyNasStats(SnmpUtility):
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
 
-        temperature_entries = self.get_next(self.host,
-                                            [
-                                                {'READYNASOS-MIB': 'temperatureNumber'},
-                                                {'READYNASOS-MIB': 'temperatureValue'}
-                                            ], self.construct_credentials(False, self.community_string))
+        oids = [
+            'READYNASOS-MIB::temperatureNumber',
+            'READYNASOS-MIB::temperatureValue'
+        ]
 
-        for temperature_entry in temperature_entries:
+        temperature_entries = self.bulkwalk(oids)
+
+        device_name = self.get_snmp_name()
+
+        for temperature_entry in temperature_entries.values():
             # Iterate over list of measurements
 
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name()
+            fields['host'] = device_name['sysName']
 
             for key, value in temperature_entry.items():
                 # Iterate over measurement fields
-                if self.get_brief_name(key) == 'temperatureNumber':
+                if key == 'temperatureNumber':
                     # Process temperatureNumber
                     fields['temperature_number'] = value
-                elif self.get_brief_name(key) == 'temperatureValue':
+                elif key == 'temperatureValue':
                     # Process temperatureValue
                     fields['temperature_celsius'] = value
                 else:
@@ -246,16 +255,19 @@ class GetReadyNasStats(SnmpUtility):
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
 
-        volume_entries = self.get_next(self.host,
-                                       [
-                                           {'READYNASOS-MIB': 'volumeNumber'},
-                                           {'READYNASOS-MIB': 'volumeRAIDLevel'},
-                                           {'READYNASOS-MIB': 'volumeStatus'},
-                                           {'READYNASOS-MIB': 'volumeSize'},
-                                           {'READYNASOS-MIB': 'volumeFreeSpace'}
-                                       ], self.construct_credentials(False, self.community_string))
+        oids = [
+            'READYNASOS-MIB::volumeNumber',
+            'READYNASOS-MIB::volumeRAIDLevel',
+            'READYNASOS-MIB::volumeStatus',
+            'READYNASOS-MIB::volumeSize',
+            'READYNASOS-MIB::volumeFreeSpace'
+        ]
 
-        for volume_entry in volume_entries:
+        volume_entries = self.bulkwalk(oids)
+
+        device_name = self.get_snmp_name()
+
+        for volume_entry in volume_entries.values():
             # Iterate over list of measurements
 
             free_space = None  # Variable to hold free space value
@@ -263,17 +275,17 @@ class GetReadyNasStats(SnmpUtility):
             fields = {}  # Define a blank dictionary to hold the fields
 
             # Store the hostname
-            fields['host'] = self.get_snmp_name()
+            fields['host'] = device_name['sysName']
 
             for key, value in volume_entry.items():
                 # Iterate over measurement fields
-                if self.get_brief_name(key) == 'volumeNumber':
+                if key == 'volumeNumber':
                     # Process volumeNumber
                     fields['volume_number'] = value
-                elif self.get_brief_name(key) == 'volumeRAIDLevel':
+                elif key == 'volumeRAIDLevel':
                     # Process volumeRAIDLevel
                     fields['volume_raid_level'] = value
-                elif self.get_brief_name(key) == 'volumeStatus':
+                elif key == 'volumeStatus':
                     # Process volumeStatus
                     if value == 'REDUNDANT':
                         # Volume OK
@@ -293,13 +305,13 @@ class GetReadyNasStats(SnmpUtility):
                     elif value == 'UNKNOWN':
                         # Volume status is unknown - CRIT
                         fields['volume_status'] = 5
-                elif self.get_brief_name(key) == 'volumeSize':
+                elif key == 'volumeSize':
                     # Process volumeSize
 
                     total_space = value  # Store the total space to allow calculation of used space
                     fields['volume_total_size_mb'] = value
 
-                elif self.get_brief_name(key) == 'volumeFreeSpace':
+                elif key == 'volumeFreeSpace':
                     # Process volumeFreeSpace
 
                     free_space = value  # Store the free space to allow calculation of used space
