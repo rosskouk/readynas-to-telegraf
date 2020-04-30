@@ -1,6 +1,19 @@
+v1.0.1
+======
+  - fdc9816 
+    - Updated submodule
+  - 3fbf96a 
+    - Updated README.md
+
+  - 847ddb8 Merge pull request #4 from rosskouk/release-v1.0.0
+    - 9cd668a 
+      - Updated get_readynas_stats.py and main.py to use new version of snmp_utilities module
+
 v1.0.0
 ======
-
+  - 9f5ba1c Merge pull request #3 from rosskouk/release-v1.0.0
+    - b599f3b 
+      - Updated CHANGELOG
   - b798fef 
     - Updated documentation in get_readynas_stats.py
   - 2b55269 
