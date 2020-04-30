@@ -8,6 +8,10 @@
 #
 # This file should be renamed to config.yaml
 
+# SNMP details
+snmp:
+    version: 2
+
 # Netgear ReadyNAS details
 readynas:
     host: nas.example.com
