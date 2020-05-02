@@ -95,4 +95,12 @@ Once the MIB is installed add a configuration file for the readynas-to-telegraf,
   name_suffix = ""
   data_format = "json"
   tag_keys = [ "host", "ifName"]
+
+[[inputs.exec]]
+  commands = [ "/etc/telegraf/scripts/readynas-to-telegraf/main.py -u" ]
+  timeout = "5s"
+  name_override = "snmp_uptime_stats"
+  name_suffix = ""
+  data_format = "json"
+  tag_keys = [ "host" ]
 ```
