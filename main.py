@@ -15,7 +15,6 @@
 #
 # Required libraries:
 #   - argparse
-#   - json
 #   - os
 #   - yaml
 #   - GetReadyNasStats
@@ -28,7 +27,6 @@
 
 
 import argparse
-import json
 import os
 
 import yaml
