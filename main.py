@@ -15,7 +15,6 @@
 #
 # Required libraries:
 #   - argparse
-#   - json
 #   - os
 #   - yaml
 #   - GetReadyNasStats
@@ -28,7 +27,6 @@
 
 
 import argparse
-import json
 import os
 
 import yaml
@@ -97,6 +95,7 @@ arg_group.add_argument('-f', '--fans', action='store_true', dest='fans', help='g
 arg_group.add_argument('-t', '--temp', action='store_true', dest='temp', help='get temperature statistics')
 arg_group.add_argument('-v', '--volumes', action='store_true', dest='volumes', help='get volume statistics')
 arg_group.add_argument('-i', '--interfaces', action='store_true', dest='interfaces', help='get interface statistics')
+arg_group.add_argument('-u', '--uptime', action='store_true', dest='uptime', help='get device uptime')
 # @endcond
 
 ## @var args
@@ -128,3 +127,7 @@ if args.volumes is True:
 if args.interfaces is True:
     stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
     stats.process_readynas_interface_table()  # Get interface statistics
+
+if args.uptime is True:
+    stats = GetReadyNasStats(readynas_host, readynas_snmp_community, snmp_version)  # Create a new GetReadyNasStats object
+    stats.get_readynas_uptime()  # Get the device uptime

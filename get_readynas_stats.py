@@ -43,6 +43,28 @@ class GetReadyNasStats(SnmpUtility):
 
         super().__init__(*args)
 
+    def get_readynas_uptime(self):
+        """! @brief Get the uptime from a Netgear ReadyNAS
+
+        @details
+
+        The uptime is printed in JSON format which can be imported by the Telegraf exec
+        plugin.
+        """
+
+        measurement_list = []  # Blank list to hold dictionaries of measurements
+        device_name = self.get_snmp_name()
+        host_uptime = self.get_snmp_uptime()
+        fields = {}
+
+        # Store the hostname
+        fields['host'] = device_name['sysName']
+        fields['uptime'] = host_uptime['sysUpTimeInstance']
+
+        measurement_list.append(fields)  # Add to the measurement list
+
+        print(json.dumps(measurement_list))  # Print out the gathered statistics
+
     def process_readynas_disk_table(self):
         """! @brief Get disk information from a Netgear ReadyNAS
 
