@@ -1,5 +1,31 @@
+v1.0.2
+======
+  - 05bfb04 Merge pull request #5 from rosskouk/feature-uptime
+  - 293c357 
+    - Updated README.md
+  - 45f7e80 
+    - Updated doxygen documentation
+  - 95faddd 
+    - Added code to run uptime check to main.py
+  - bfdc397 
+    - Added method GetReadyNasStats::get_readynas_uptime() to get_readynas_stats.py
+  - 94c3ad0 
+    - Removed json library from main.py as this is no longer required
+  - 1d00567 
+    - Updated submodule
+  - 3134a68 
+    - Added method GetReadyNasStats::process_readynas_interface_table() which inserts device hostname into each interface result
+  - 400cb2e 
+    - Updated shebang
+  - 37339a9 
+    - Updated config file loading statement as previous method is deprecated
+  - 74c412d 
+    - Added snmp version to config.new.yaml
+
 v1.0.1
 ======
+  - b1cce1a (tag: v1.0.1) 
+    - Updated CHANGELOG
   - fdc9816 
     - Updated submodule
   - 3fbf96a 
