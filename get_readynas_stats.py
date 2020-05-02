@@ -53,15 +53,8 @@ class GetReadyNasStats(SnmpUtility):
         """
 
         measurement_list = []  # Blank list to hold dictionaries of measurements
-
         device_name = self.get_snmp_name()
-
-        ## @var host_uptime
-        # @brief DICTIONARY - Dictionary containing the contents of the SNMP sysUpTimeInstance entry
         host_uptime = self.get_snmp_uptime()
-
-        ## @var fields
-        # @brief DICTIONARY - Dictionary to hold the fields
         fields = {}
 
         # Store the hostname
